@@ -1,7 +1,7 @@
 package br.ufs.kryptokarteira.backend
 
 import br.ufs.kryptokarteira.backend.domain.PricesBroker
-import br.ufs.kryptokarteira.backend.infrastructure.PricingInfrastructure
+import br.ufs.kryptokarteira.backend.infrastructure.BrokerInfrastructure
 import br.ufs.kryptokarteira.backend.infrastructure.RestCaller
 import br.ufs.kryptokarteira.backend.services.BrokerService
 import com.github.salomonbrys.kodein.*
@@ -16,7 +16,7 @@ object Injector {
         bind<OkHttpClient>() with singleton { OkHttpClient.Builder().build() }
         bind<RestCaller>() with provider { RestCaller(instance()) }
 
-        bind<PricesBroker>() with provider { PricingInfrastructure(instance()) }
+        bind<PricesBroker>() with provider { BrokerInfrastructure(instance()) }
         bind<BrokerService>() with provider { BrokerService(instance()) }
 
         bind<APIGateway>() with provider { APIGateway(instance()) }
