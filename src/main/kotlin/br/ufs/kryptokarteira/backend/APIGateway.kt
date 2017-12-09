@@ -1,6 +1,9 @@
 package br.ufs.kryptokarteira.backend
 
+import br.ufs.kryptokarteira.backend.domain.DomainError
+import br.ufs.kryptokarteira.backend.domain.ExternalServiceUnavailable
 import br.ufs.kryptokarteira.backend.services.BrokerService
+import spark.kotlin.exception
 import spark.kotlin.get
 import spark.kotlin.internalServerError
 import spark.kotlin.notFound
@@ -25,6 +28,24 @@ class APIGateway(private val brokerService: BrokerService) {
             type(contentType = "application/json")
             "{\"message\":\"It`s not you. It`s us ... :sadpanda: \"}"
         }
+
+        exception(DomainError::class, {
+            when (exception) {
+
+                is ExternalServiceUnavailable -> {
+                    status(501)
+                    type(contentType = "application/json")
+                    response.body("{\"message\":\"Some internal system is unavailable\"}")
+                }
+
+                else -> {
+                    internalServerError {
+                        type(contentType = "application/json")
+                        "{\"message\":\"It`s not you. It`s us ... :sadpanda: \"}"
+                    }
+                }
+            }
+        })
     }
 
 }
