@@ -1,7 +1,6 @@
 package br.ufs.kryptokarteira.backend.tests
 
 import br.ufs.kryptokarteira.backend.domain.Currency.Bitcoin
-import br.ufs.kryptokarteira.backend.domain.Currency.Brita
 import br.ufs.kryptokarteira.backend.domain.PricesBroker
 import br.ufs.kryptokarteira.backend.domain.Pricing
 import br.ufs.kryptokarteira.backend.services.BrokerService
@@ -23,17 +22,21 @@ class BrokerServiceTests {
     }
 
     @Test fun `should expose lastest prices successfully`() {
-        whenever(broker.lastestPrices())
-                .thenReturn(
-                        listOf(
-                                Pricing(Brita, 3.20f),
-                                Pricing(Bitcoin, 48999f)
-                        )
-                )
+
+        val fakeValue = 48999f
+        val fakePricing = Pricing(Bitcoin, fakeValue)
+
+        whenever(broker.lastestPrices()).thenReturn(listOf(fakePricing))
 
         val operation = service.lastestPrices()
 
         assertThat(operation.statusCode).isEqualTo(200)
+
+        assertThat(operation.result).contains(
+                Bitcoin.name,
+                fakeValue.toString()
+        )
+
     }
 
 }
