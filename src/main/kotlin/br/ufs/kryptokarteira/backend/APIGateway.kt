@@ -1,16 +1,16 @@
 package br.ufs.kryptokarteira.backend
 
-import br.ufs.kryptokarteira.backend.services.PricingService
+import br.ufs.kryptokarteira.backend.services.BrokerService
 import spark.kotlin.get
 import spark.kotlin.internalServerError
 import spark.kotlin.notFound
 
-class APIGateway(private val pricingService: PricingService) {
+class APIGateway(private val brokerService: BrokerService) {
 
     fun start() {
 
         get(path = "/pricing") {
-            val pricing = pricingService.lastestPrices()
+            val pricing = brokerService.lastestPrices()
             type(contentType = "application/json")
             status(pricing.statusCode)
             pricing.result

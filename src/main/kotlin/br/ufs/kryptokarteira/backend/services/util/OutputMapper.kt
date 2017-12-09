@@ -1,4 +1,4 @@
-package br.ufs.kryptokarteira.backend.services
+package br.ufs.kryptokarteira.backend.services.util
 
 import com.google.gson.Gson
 

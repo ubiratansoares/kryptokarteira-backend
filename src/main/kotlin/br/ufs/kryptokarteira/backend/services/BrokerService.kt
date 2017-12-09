@@ -2,8 +2,10 @@ package br.ufs.kryptokarteira.backend.services
 
 import br.ufs.kryptokarteira.backend.domain.PricesBroker
 import br.ufs.kryptokarteira.backend.services.output.PricePayload
+import br.ufs.kryptokarteira.backend.services.util.OutputMapper
+import br.ufs.kryptokarteira.backend.services.util.ServiceOperation
 
-class PricingService(private val broker: PricesBroker) {
+class BrokerService(private val broker: PricesBroker) {
 
     private val mapper = OutputMapper
 
