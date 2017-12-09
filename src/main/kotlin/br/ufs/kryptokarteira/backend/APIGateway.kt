@@ -11,7 +11,7 @@ class APIGateway(private val brokerService: BrokerService) {
 
     fun start() {
 
-        get(path = "/pricing") {
+        get(path = "/broker") {
             val pricing = brokerService.lastestPrices()
             type(contentType = "application/json")
             status(pricing.statusCode)
