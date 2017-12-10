@@ -22,8 +22,8 @@ class BrokerInfrastructure(
 
     override fun lastestPrices(): List<Pricing> {
 
-        val dateTime = LocalDateTime.now()
-        val formattedDate = dateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
+        val yesterday = LocalDateTime.now().minusDays(1)
+        val formattedDate = yesterday.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
         val fromYesterday = bcbAPI
                 .replace(datePlaceholder, formattedDate)
                 .replace(currencyPlaceholder, "USD")
