@@ -2,11 +2,20 @@ package br.ufs.kryptokarteira.backend.rest
 
 import br.ufs.kryptokarteira.backend.domain.*
 import br.ufs.kryptokarteira.backend.services.BrokerService
+import spark.Spark
 import spark.kotlin.*
 
 class APIGateway(private val brokerService: BrokerService) {
 
     fun start() {
+
+        config {
+            port = 8080
+
+            staticFiles {
+                location = "/public"
+            }
+        }
 
         before {
             val authorized = CheckAuthorization(request)
