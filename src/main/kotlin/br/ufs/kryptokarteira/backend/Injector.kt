@@ -5,6 +5,7 @@ import br.ufs.kryptokarteira.backend.infrastructure.BrokerInfrastructure
 import br.ufs.kryptokarteira.backend.infrastructure.RestCaller
 import br.ufs.kryptokarteira.backend.infrastructure.datasources.bcb.BCBDataSource
 import br.ufs.kryptokarteira.backend.infrastructure.datasources.mbtc.MBTCDataSource
+import br.ufs.kryptokarteira.backend.rest.APIGateway
 import br.ufs.kryptokarteira.backend.services.BrokerService
 import com.github.salomonbrys.kodein.*
 import com.google.gson.Gson

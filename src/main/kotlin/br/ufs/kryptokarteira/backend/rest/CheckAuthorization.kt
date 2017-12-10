@@ -1,4 +1,4 @@
-package br.ufs.kryptokarteira.backend
+package br.ufs.kryptokarteira.backend.rest
 
 import spark.Request
 
