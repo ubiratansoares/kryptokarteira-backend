@@ -1,12 +1,12 @@
 {
   "name": "KryptoKarteira",
-  "version": "0.0.1",
-  "description": "Documentation for KryptoKarteira REST API",
-  "title": "Documentation for KrytoKarteira Backend",
-  "url" : "https://url.to/krytokarteira-backend",
+  "version": "1.0.0",
+  "description": "Documentation for KryptoKarteira REST API.",
+  "title": "Documentation for KrytoKarteira Backend.",
+  "url" : "https://url.to/krytokarteira-backend/api",
   "template": {
-    "withCompare": true,
-    "withGenerator": true
+    "withCompare": false,
+    "withGenerator": false
   }
 
 }
