@@ -17,7 +17,8 @@ class BrokerService(private val broker: PricesBroker) {
             PricePayload(
                     label = it.currency.label.toUpperCase(),
                     name = it.currency.name,
-                    value = it.value
+                    sell = it.sellPrice,
+                    buy = it.buyPrice
             )
         }
 

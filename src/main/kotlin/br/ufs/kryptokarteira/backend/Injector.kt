@@ -2,9 +2,9 @@ package br.ufs.kryptokarteira.backend
 
 import br.ufs.kryptokarteira.backend.domain.PricesBroker
 import br.ufs.kryptokarteira.backend.infrastructure.BrokerInfrastructure
-import br.ufs.kryptokarteira.backend.infrastructure.networking.RestCaller
 import br.ufs.kryptokarteira.backend.infrastructure.datasources.bcb.BCBDataSource
 import br.ufs.kryptokarteira.backend.infrastructure.datasources.mbtc.MBTCDataSource
+import br.ufs.kryptokarteira.backend.infrastructure.networking.RestCaller
 import br.ufs.kryptokarteira.backend.rest.APIGateway
 import br.ufs.kryptokarteira.backend.services.BrokerService
 import com.github.salomonbrys.kodein.*
@@ -22,7 +22,12 @@ object Injector {
         bind<BCBDataSource>() with provider { BCBDataSource(instance()) }
         bind<MBTCDataSource>() with provider { MBTCDataSource(instance()) }
 
-        bind<PricesBroker>() with provider { BrokerInfrastructure(instance(), instance()) }
+        bind<PricesBroker>() with provider {
+            BrokerInfrastructure(
+                    bcb = instance(),
+                    mbtc = instance())
+        }
+
         bind<BrokerService>() with provider { BrokerService(instance()) }
 
         bind<APIGateway>() with provider { APIGateway(instance()) }

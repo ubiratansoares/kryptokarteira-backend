@@ -1,16 +1,13 @@
 package br.ufs.kryptokarteira.backend.infrastructure
 
-import br.ufs.kryptokarteira.backend.domain.*
+import br.ufs.kryptokarteira.backend.domain.Currency
+import br.ufs.kryptokarteira.backend.domain.PricesBroker
+import br.ufs.kryptokarteira.backend.domain.Pricing
 import br.ufs.kryptokarteira.backend.infrastructure.datasources.bcb.BCBDataSource
 import br.ufs.kryptokarteira.backend.infrastructure.datasources.mbtc.MBTCDataSource
-import br.ufs.kryptokarteira.backend.infrastructure.networking.RestIntegrationError
+import br.ufs.kryptokarteira.backend.infrastructure.util.AsDomainError
 import com.google.common.cache.CacheBuilder
-import com.google.gson.JsonIOException
-import com.google.gson.JsonParseException
-import com.google.gson.JsonSyntaxException
-import com.google.gson.stream.MalformedJsonException
-import java.net.SocketTimeoutException
-import java.net.UnknownHostException
+import java.util.concurrent.ExecutionException
 import java.util.concurrent.TimeUnit
 
 
@@ -25,31 +22,26 @@ class BrokerInfrastructure(
     }
 
     override fun lastestPrices(): List<Pricing> {
-        return cache.get("pricing", { fetchFromDataSources() })
+        try {
+            return cache.get("pricing", { fetchFromDataSources() })
+        } catch (e: ExecutionException) {
+            throw e.cause!! // Thanks, Guava :(
+        }
     }
 
     private fun fetchFromDataSources(): List<Pricing> {
 
         try {
-            return listOf(
-                    Pricing(Currency.Brita, mbtc.bitcoinPrice()),
-                    Pricing(Currency.Bitcoin, bcb.britaPricing())
-            )
-        } catch (unhandled: Throwable) {
-            throw asDomainError(unhandled)
-        }
-    }
+            val bitcoinValues = mbtc.bitcoinPrices()
+            val britaValues = bcb.britaPrices()
 
-    private fun asDomainError(unmapped: Throwable): DomainError = when (unmapped) {
-        is SocketTimeoutException -> ExternalServiceTimeout()
-        is UnknownHostException -> ExternalServiceUnavailable()
-        is RestIntegrationError.InternalServerErrorRest -> ExternalServiceUnavailable()
-        is RestIntegrationError.ClientErrorRest -> ExternalServiceIntegrationError()
-        is MalformedJsonException -> ExternalServiceContractError()
-        is JsonIOException -> ExternalServiceContractError()
-        is JsonParseException -> ExternalServiceContractError()
-        is JsonSyntaxException -> ExternalServiceContractError()
-        else -> UnknownInternalError()
+            return listOf(
+                    Pricing(Currency.Brita, britaValues.buy, britaValues.sell),
+                    Pricing(Currency.Bitcoin, bitcoinValues.buy, bitcoinValues.sell)
+            )
+        } catch (error: Throwable) {
+            throw AsDomainError(error)
+        }
     }
 
     private companion object {

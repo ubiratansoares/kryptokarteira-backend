@@ -1,12 +1,17 @@
 package br.ufs.kryptokarteira.backend.infrastructure.datasources.mbtc
 
 import br.ufs.kryptokarteira.backend.infrastructure.networking.RestCaller
+import br.ufs.kryptokarteira.backend.infrastructure.util.PricingValues
 
 class MBTCDataSource(private val caller: RestCaller) {
 
-    fun bitcoinPrice(): Float {
+    fun bitcoinPrices(): PricingValues {
         val payload = caller.get(mercadoBitconAPI, MercadoBitconPayload::class)
-        return payload.ticker.buyPrice.toFloat()
+
+        return PricingValues(
+                buy = payload.ticker.buyPrice.toFloat(),
+                sell = payload.ticker.sellPrice.toFloat()
+        )
     }
 
     private companion object {

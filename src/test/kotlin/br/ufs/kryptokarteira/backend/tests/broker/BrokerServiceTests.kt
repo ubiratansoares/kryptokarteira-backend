@@ -1,4 +1,4 @@
-package br.ufs.kryptokarteira.backend.tests
+package br.ufs.kryptokarteira.backend.tests.broker
 
 import br.ufs.kryptokarteira.backend.domain.Currency.Bitcoin
 import br.ufs.kryptokarteira.backend.domain.PricesBroker
@@ -24,7 +24,7 @@ class BrokerServiceTests {
     @Test fun `should expose lastest prices successfully`() {
 
         val fakeValue = 48999f
-        val fakePricing = Pricing(Bitcoin, fakeValue)
+        val fakePricing = Pricing(Bitcoin, fakeValue, fakeValue)
 
         whenever(broker.lastestPrices()).thenReturn(listOf(fakePricing))
 
@@ -36,7 +36,6 @@ class BrokerServiceTests {
                 Bitcoin.name,
                 fakeValue.toString()
         )
-
     }
 
 }
