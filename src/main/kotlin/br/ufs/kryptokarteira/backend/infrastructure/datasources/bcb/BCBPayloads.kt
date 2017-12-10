@@ -1,4 +1,4 @@
-package br.ufs.kryptokarteira.backend.infrastructure.inputs
+package br.ufs.kryptokarteira.backend.infrastructure.datasources.bcb
 
 import com.google.gson.annotations.SerializedName
 
