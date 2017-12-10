@@ -16,22 +16,20 @@ class APIGateway(private val brokerService: BrokerService) {
         }
 
         get(path = "api/v1/broker") {
-
             val pricing = brokerService.lastestPrices()
-
             reply {
                 pricing.statusCode withMessage pricing.result
             }
         }
 
         notFound {
-            reply {
+            failure {
                 404 withMessage "Not found"
             }
         }
 
         internalServerError {
-            reply {
+            failure {
                 500 withMessage "Its not you ... Its us #sadpanda"
             }
         }
