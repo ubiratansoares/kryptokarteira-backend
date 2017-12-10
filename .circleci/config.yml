@@ -1,0 +1,44 @@
+version: 2
+jobs:
+  build:
+
+    working_directory: ~/kryptokarteira-backend
+
+    docker:
+      - image: circleci/8-jdk-node-browsers
+
+    steps:
+      - checkout
+
+      - run:
+          name: Update NPM
+          command: 'sudo npm install -g npm@latest'
+
+      - restore_cache:
+          key: kryptokarteira-backend-{{ checksum "build.gradle" }}
+
+      - run:
+          name: Install apidoc
+          command: npm install apidoc -g
+
+      - run:
+          name: Perform build
+          command: ./gradlew build
+
+      - run:
+          name: Generate RestAPI docs
+          command: apidoc -i . -o docs
+
+      - save_cache:
+          paths:
+            - ~/.gradle
+            - ~/.m2
+            - ./node_modules
+          key: kryptokarteira-backend-{{ checksum "build.gradle" }}
+
+      - store_test_results:
+          path: build/reports/tests/test/*
+
+      - store_artifacts:
+          path: docs/
+          destination: apidocs
