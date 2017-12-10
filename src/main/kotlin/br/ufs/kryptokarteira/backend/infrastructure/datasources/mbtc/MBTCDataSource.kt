@@ -1,6 +1,6 @@
 package br.ufs.kryptokarteira.backend.infrastructure.datasources.mbtc
 
-import br.ufs.kryptokarteira.backend.infrastructure.RestCaller
+import br.ufs.kryptokarteira.backend.infrastructure.networking.RestCaller
 
 class MBTCDataSource(private val caller: RestCaller) {
 

@@ -1,6 +1,6 @@
 package br.ufs.kryptokarteira.backend.infrastructure.datasources.bcb
 
-import br.ufs.kryptokarteira.backend.infrastructure.RestCaller
+import br.ufs.kryptokarteira.backend.infrastructure.networking.RestCaller
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 

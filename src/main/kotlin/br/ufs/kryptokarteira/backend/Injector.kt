@@ -2,7 +2,7 @@ package br.ufs.kryptokarteira.backend
 
 import br.ufs.kryptokarteira.backend.domain.PricesBroker
 import br.ufs.kryptokarteira.backend.infrastructure.BrokerInfrastructure
-import br.ufs.kryptokarteira.backend.infrastructure.RestCaller
+import br.ufs.kryptokarteira.backend.infrastructure.networking.RestCaller
 import br.ufs.kryptokarteira.backend.infrastructure.datasources.bcb.BCBDataSource
 import br.ufs.kryptokarteira.backend.infrastructure.datasources.mbtc.MBTCDataSource
 import br.ufs.kryptokarteira.backend.rest.APIGateway

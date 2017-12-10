@@ -1,4 +1,4 @@
-package br.ufs.kryptokarteira.backend.infrastructure
+package br.ufs.kryptokarteira.backend.infrastructure.networking
 
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
@@ -15,9 +15,16 @@ class RestCaller(private val httpClient: OkHttpClient) {
                 .build()
 
         val response = httpClient.newCall(request).execute()
-        val result = response.body()?.string()
 
-        return gson.fromJson(result, target.java) as T
+        if (response.isSuccessful) {
+            val result = response.body()?.string()
+            return gson.fromJson(result, target.java) as T
+        }
+
+        when (response.code()) {
+            in 400..499 -> throw RestIntegrationError.ClientErrorRest
+            else -> throw RestIntegrationError.InternalServerErrorRest
+        }
     }
 
 }
