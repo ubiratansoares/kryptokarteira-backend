@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter
 class BCBDataSource(private val caller: RestCaller) {
 
     fun britaPrices(): PricingValues {
-        val yesterday = LocalDateTime.now().minusDays(1)
+        val yesterday = LocalDateTime.now().minusDays(5)
         val formattedDate = yesterday.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
         val fromYesterday = bcbAPI
                 .replace(datePlaceholder, formattedDate)
@@ -27,7 +27,7 @@ class BCBDataSource(private val caller: RestCaller) {
         val currencyPlaceholder = "<CURRENCY>"
 
         val bcbAPI = "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/" +
-                "CotacaoMoedaDia(moeda=%27${currencyPlaceholder}%27,dataCotacao=%27${datePlaceholder}%27)" +
+                "CotacaoMoedaDia(moeda=%27$currencyPlaceholder%27,dataCotacao=%27$datePlaceholder%27)" +
                 "?format=json"
     }
 }
