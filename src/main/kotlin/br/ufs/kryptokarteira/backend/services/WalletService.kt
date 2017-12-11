@@ -1,6 +1,9 @@
 package br.ufs.kryptokarteira.backend.services
 
-import br.ufs.kryptokarteira.backend.domain.*
+import br.ufs.kryptokarteira.backend.domain.BankAccount
+import br.ufs.kryptokarteira.backend.domain.CryptoCurrencyTrader
+import br.ufs.kryptokarteira.backend.domain.KryptoBanker
+import br.ufs.kryptokarteira.backend.domain.UnknownInternalError
 import br.ufs.kryptokarteira.backend.services.output.SavingPayload
 import br.ufs.kryptokarteira.backend.services.output.TransactionResultPayload
 import br.ufs.kryptokarteira.backend.services.output.WalletPayload
@@ -24,7 +27,7 @@ class WalletService(
     }
 
     fun walletByOwner(owner: String): ServiceOperation {
-        val account = banker.wallet(owner)
+        val account = banker.account(owner)
         val output = walletPayload(account)
         return ServiceOperation(200, mapper.asJson(output))
     }
@@ -39,12 +42,8 @@ class WalletService(
             else -> throw InvalidTransactionType()
         }
 
-        if (transaction is Transaction.Successfull) {
-            val output = TransactionResultPayload("Success!")
-            return ServiceOperation(201, mapper.asJson(output))
-        }
-
-        throw CannotPerformTransaction()
+        val output = TransactionResultPayload(transaction.message)
+        return ServiceOperation(201, mapper.asJson(output))
     }
 
     private fun walletPayload(account: BankAccount): WalletPayload {

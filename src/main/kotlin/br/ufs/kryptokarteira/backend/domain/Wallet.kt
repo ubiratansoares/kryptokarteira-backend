@@ -12,7 +12,7 @@ class Wallet(
 
         return when (ableToBuy) {
             true -> trader.buyMore(bankAccount.owner, wantToBuy, amount)
-            false -> Transaction.Invalid()
+            false -> throw CannotPerformTransaction()
         }
     }
 
@@ -21,7 +21,7 @@ class Wallet(
 
         return when (ableToSell) {
             true -> trader.sell(bankAccount.owner, wantToSell, amount)
-            false -> Transaction.Invalid()
+            false -> throw CannotPerformTransaction()
         }
     }
 

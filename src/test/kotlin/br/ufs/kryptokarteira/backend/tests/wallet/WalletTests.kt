@@ -4,6 +4,7 @@ import br.ufs.kryptokarteira.backend.domain.*
 import br.ufs.kryptokarteira.backend.domain.Currency.*
 import com.nhaarman.mockito_kotlin.*
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Before
 import org.junit.Test
 
@@ -108,19 +109,21 @@ class WalletTests {
     }
 
     private fun `transaction as buy may succeed`() {
-        whenever(trader.buyMore(any(), any(), any())).thenReturn(Transaction.Successfull())
+        whenever(trader.buyMore(any(), any(), any())).thenReturn(Transaction("Success!"))
     }
 
     private fun `transaction as sell may succeed`() {
-        whenever(trader.sell(any(), any(), any())).thenReturn(Transaction.Successfull())
+        whenever(trader.sell(any(), any(), any())).thenReturn(Transaction("Success!"))
     }
 
     private fun assertInvalidTransaction(func: () -> Transaction) {
-        assertThat(func()).isInstanceOf(Transaction.Invalid::class.java)
+        assertThatThrownBy {
+            func()
+        }.isInstanceOf(CannotPerformTransaction::class.java)
     }
 
     private fun assertValidTransaction(func: () -> Transaction) {
-        assertThat(func()).isInstanceOf(Transaction.Successfull::class.java)
+        assertThat(func()).isInstanceOf(Transaction::class.java)
     }
 
     private fun `verify trader interactions buy single buy`() {

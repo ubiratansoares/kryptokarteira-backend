@@ -1,7 +1,8 @@
 package br.ufs.kryptokarteira.backend.rest
 
 import br.ufs.kryptokarteira.backend.domain.*
-import br.ufs.kryptokarteira.backend.services.*
+import br.ufs.kryptokarteira.backend.services.BrokerService
+import br.ufs.kryptokarteira.backend.services.WalletService
 import br.ufs.kryptokarteira.backend.services.util.*
 import spark.kotlin.*
 

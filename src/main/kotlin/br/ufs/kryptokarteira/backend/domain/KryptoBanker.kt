@@ -18,7 +18,7 @@ class KryptoBanker(private val accountManager: AccountManager) {
 
     }
 
-    fun wallet(owner: String): BankAccount {
+    fun account(owner: String): BankAccount {
         return accountManager.accountForOwner(owner)
     }
 
