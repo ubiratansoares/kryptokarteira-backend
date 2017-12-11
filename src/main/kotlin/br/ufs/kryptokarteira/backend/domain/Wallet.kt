@@ -5,22 +5,35 @@ class Wallet(
         private val trader: CryptoCurrencyTrader,
         private val broker: PricesBroker) {
 
-    fun buyCriptoCurrency(wantToBuy: Currency, amount: Float): Transaction {
+    fun buyCryptoCurrency(wantToBuy: Currency, amount: Float): Transaction {
         val investments = bankAccount.savings
         val remainingCash = investments.first { it.currency == Currency.Real }
         val ableToBuy = checkIfBuyAllowed(remainingCash, wantToBuy, amount)
 
+        val transactionData = DataForTransaction(
+                bankAccount.owner,
+                type = DataForTransaction.BUY_OPERATION,
+                currency = wantToBuy,
+                amount = amount
+        )
         return when (ableToBuy) {
-            true -> trader.buyMore(bankAccount.owner, wantToBuy, amount)
+            true -> trader.performTransaction(transactionData)
             false -> throw CannotPerformTransaction()
         }
     }
 
-    fun sellCriptoCurrency(wantToSell: Currency, amount: Float): Transaction {
+    fun sellCryptoCurrency(wantToSell: Currency, amount: Float): Transaction {
         val ableToSell = checkIfSellingAllowed(wantToSell, amount)
 
+        val transactionData = DataForTransaction(
+                bankAccount.owner,
+                type = DataForTransaction.SELL_OPERATION,
+                currency = wantToSell,
+                amount = amount
+        )
+
         return when (ableToSell) {
-            true -> trader.sell(bankAccount.owner, wantToSell, amount)
+            true -> trader.performTransaction(transactionData)
             false -> throw CannotPerformTransaction()
         }
     }

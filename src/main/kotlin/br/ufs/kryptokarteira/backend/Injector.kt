@@ -1,8 +1,8 @@
 package br.ufs.kryptokarteira.backend
 
 import br.ufs.kryptokarteira.backend.domain.AccountManager
+import br.ufs.kryptokarteira.backend.domain.CryptoBanker
 import br.ufs.kryptokarteira.backend.domain.CryptoCurrencyTrader
-import br.ufs.kryptokarteira.backend.domain.KryptoBanker
 import br.ufs.kryptokarteira.backend.domain.PricesBroker
 import br.ufs.kryptokarteira.backend.infrastructure.AccountInfrastructure
 import br.ufs.kryptokarteira.backend.infrastructure.BrokerInfrastructure
@@ -37,14 +37,15 @@ object Injector {
 
         bind<AccountManager>() with provider { AccountInfrastructure() }
         bind<CryptoCurrencyTrader>() with provider { TraderInfrastructure() }
-        bind<KryptoBanker>() with provider { KryptoBanker(instance()) }
+        bind<CryptoBanker>() with provider { CryptoBanker(instance()) }
 
         bind<BrokerService>() with provider { BrokerService(instance()) }
 
         bind<WalletService>() with provider {
             WalletService(
                     banker = instance(),
-                    trader = instance()
+                    trader = instance(),
+                    broker = instance()
             )
         }
 

@@ -13,8 +13,9 @@ import org.junit.Test
 class WalletServiceTests {
 
     lateinit var service: WalletService
-    lateinit var banker: KryptoBanker
+    lateinit var banker: CryptoBanker
     lateinit var trader: CryptoCurrencyTrader
+    lateinit var broker: PricesBroker
 
     val fakeAccount = BankAccount(
             owner = "Bira",
@@ -28,7 +29,8 @@ class WalletServiceTests {
     @Before fun `before each test`() {
         banker = mock()
         trader = mock()
-        service = WalletService(banker, trader)
+        broker = mock()
+        service = WalletService(banker, trader, broker)
     }
 
     @Test fun `should create new wallet with success`() {

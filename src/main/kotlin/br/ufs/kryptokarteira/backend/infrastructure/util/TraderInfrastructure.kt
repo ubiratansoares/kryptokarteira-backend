@@ -1,17 +1,13 @@
 package br.ufs.kryptokarteira.backend.infrastructure.util
 
 import br.ufs.kryptokarteira.backend.domain.CryptoCurrencyTrader
-import br.ufs.kryptokarteira.backend.domain.Currency
 import br.ufs.kryptokarteira.backend.domain.Transaction
+import br.ufs.kryptokarteira.backend.domain.DataForTransaction
 
 class TraderInfrastructure : CryptoCurrencyTrader {
 
-    override fun buyMore(owner: String, currency: Currency, amount: Float): Transaction {
-        TODO("not implemented")
-    }
-
-    override fun sell(owner: String, currency: Currency, amount: Float): Transaction {
-        TODO("not implemented")
+    override fun performTransaction(data: DataForTransaction): Transaction {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
 }

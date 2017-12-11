@@ -24,20 +24,20 @@ class WalletTests {
 
     @Test fun `can buy criptocurrency with success when money available`() {
 
-        `transaction as buy may succeed`()
+        `transaction will succeed`()
 
         assertValidTransaction {
-            wallet.buyCriptoCurrency(wantToBuy = Bitcoin, amount = 2f)
+            wallet.buyCryptoCurrency(wantToBuy = Bitcoin, amount = 2f)
         }
 
-        `verify trader interactions buy single buy`()
+        `verify trader interactions for single transaction`()
     }
 
 
     @Test fun `can not buy criptocurrency with success when doesnt have money enough`() {
 
         assertInvalidTransaction {
-            wallet.buyCriptoCurrency(wantToBuy = Bitcoin, amount = 20f)
+            wallet.buyCryptoCurrency(wantToBuy = Bitcoin, amount = 20f)
         }
 
         verifyZeroInteractions(trader)
@@ -46,11 +46,11 @@ class WalletTests {
     @Test fun `can only buy criptocurrency with positive amounts`() {
 
         assertInvalidTransaction {
-            wallet.buyCriptoCurrency(wantToBuy = Bitcoin, amount = -10f)
+            wallet.buyCryptoCurrency(wantToBuy = Bitcoin, amount = -10f)
         }
 
         assertInvalidTransaction {
-            wallet.buyCriptoCurrency(wantToBuy = Brita, amount = 0.0f)
+            wallet.buyCryptoCurrency(wantToBuy = Brita, amount = 0.0f)
         }
 
         verifyZeroInteractions(trader)
@@ -58,24 +58,24 @@ class WalletTests {
 
     @Test fun `can sell criptocurrency with success`() {
 
-        `transaction as sell may succeed`()
+        `transaction will succeed`()
 
         assertValidTransaction {
-            wallet.sellCriptoCurrency(wantToSell = Bitcoin, amount = 2f)
+            wallet.sellCryptoCurrency(wantToSell = Bitcoin, amount = 2f)
         }
 
-        `verify trader interactions for single sell`()
+        `verify trader interactions for single transaction`()
     }
 
 
     @Test fun `can only sell criptocurrency with positive amounts`() {
 
         assertInvalidTransaction {
-            wallet.sellCriptoCurrency(wantToSell = Bitcoin, amount = -100f)
+            wallet.sellCryptoCurrency(wantToSell = Bitcoin, amount = -100f)
         }
 
         assertInvalidTransaction {
-            wallet.sellCriptoCurrency(wantToSell = Brita, amount = 0.0f)
+            wallet.sellCryptoCurrency(wantToSell = Brita, amount = 0.0f)
         }
 
         verifyZeroInteractions(trader)
@@ -84,7 +84,7 @@ class WalletTests {
     @Test fun `can only sell criptocurrency with success when amount is on wallet`() {
 
         assertInvalidTransaction {
-            wallet.sellCriptoCurrency(wantToSell = Brita, amount = 20.0f)
+            wallet.sellCryptoCurrency(wantToSell = Brita, amount = 20.0f)
         }
 
         verifyZeroInteractions(trader)
@@ -108,12 +108,8 @@ class WalletTests {
         return BankAccount("Bira", savings)
     }
 
-    private fun `transaction as buy may succeed`() {
-        whenever(trader.buyMore(any(), any(), any())).thenReturn(Transaction("Success!"))
-    }
-
-    private fun `transaction as sell may succeed`() {
-        whenever(trader.sell(any(), any(), any())).thenReturn(Transaction("Success!"))
+    private fun `transaction will succeed`() {
+        whenever(trader.performTransaction(any())).thenReturn(Transaction("Success!"))
     }
 
     private fun assertInvalidTransaction(func: () -> Transaction) {
@@ -126,15 +122,8 @@ class WalletTests {
         assertThat(func()).isInstanceOf(Transaction::class.java)
     }
 
-    private fun `verify trader interactions buy single buy`() {
-        verify(trader, times(1)).buyMore(any(), any(), any())
-        verify(trader, never()).sell(any(), any(), any())
-        verifyNoMoreInteractions(trader)
-    }
-
-    private fun `verify trader interactions for single sell`() {
-        verify(trader, times(1)).sell(any(), any(), any())
-        verify(trader, never()).buyMore(any(), any(), any())
+    private fun `verify trader interactions for single transaction`() {
+        verify(trader, times(1)).performTransaction(any())
         verifyNoMoreInteractions(trader)
     }
 
