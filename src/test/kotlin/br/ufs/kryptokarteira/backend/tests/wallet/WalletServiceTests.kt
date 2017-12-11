@@ -1,7 +1,9 @@
 package br.ufs.kryptokarteira.backend.tests.wallet
 
 import br.ufs.kryptokarteira.backend.domain.*
+import br.ufs.kryptokarteira.backend.domain.Currency.*
 import br.ufs.kryptokarteira.backend.services.WalletService
+import com.github.salomonbrys.kotson.jsonObject
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
@@ -20,10 +22,15 @@ class WalletServiceTests {
     val fakeAccount = BankAccount(
             owner = "Bira",
             savings = listOf(
-                    Investiment(Currency.Real, 50000f),
-                    Investiment(Currency.Brita, 0.0f),
-                    Investiment(Currency.Bitcoin, 4.4f)
+                    Investiment(Real, 50000f),
+                    Investiment(Brita, 10.0f),
+                    Investiment(Bitcoin, 4.4f)
             )
+    )
+
+    val fakePricing = listOf(
+            Pricing(Bitcoin, 10f, 10f),
+            Pricing(Brita, 1f, 1f)
     )
 
     @Before fun `before each test`() {
@@ -44,5 +51,46 @@ class WalletServiceTests {
         val operation = service.walletByOwner("Bira")
         assertThat(operation.statusCode).isEqualTo(200)
     }
+
+    @Test fun `should perform buy transaction with success`() {
+        `setup transaction collaborators`()
+
+        val rawOwner = "Bira"
+        val rawBody = buyBitcoins()
+
+        val operation = service.newTransaction(rawOwner, rawBody)
+        assertThat(operation.statusCode).isEqualTo(201)
+    }
+
+    @Test fun `should perform sell transaction with success`() {
+        `setup transaction collaborators`()
+
+        val rawOwner = "Bira"
+        val rawBody = sellBritas()
+
+        val operation = service.newTransaction(rawOwner, rawBody)
+        assertThat(operation.statusCode).isEqualTo(201)
+    }
+
+
+    private fun `setup transaction collaborators`() {
+        whenever(banker.account(any())).thenReturn(fakeAccount)
+        whenever(trader.performTransaction(any())).thenReturn(Transaction("Done"))
+        whenever(broker.lastestPrices()).thenReturn(fakePricing)
+    }
+
+    private fun buyBitcoins() =
+            jsonObject(
+                    "type" to "buy",
+                    "currency" to "btc",
+                    "amount" to 2.1f
+            ).toString()
+
+    private fun sellBritas() =
+            jsonObject(
+                    "type" to "sell",
+                    "currency" to "bta",
+                    "amount" to 5
+            ).toString()
 
 }
