@@ -1,6 +1,8 @@
 package br.ufs.kryptokarteira.backend.services.util
 
 import br.ufs.kryptokarteira.backend.domain.Currency
+import br.ufs.kryptokarteira.backend.domain.Currency.Bitcoin
+import br.ufs.kryptokarteira.backend.domain.Currency.Brita
 import br.ufs.kryptokarteira.backend.domain.DataForTransaction
 import br.ufs.kryptokarteira.backend.domain.UnknownInternalError
 import br.ufs.kryptokarteira.backend.services.input.NewTransactionBody
@@ -24,16 +26,14 @@ object TransactionBodyValidation {
 
     private fun validateCurrency(currency: String): Currency {
         val validCurrency = with(currency) {
-            contentEquals(Currency.Brita.label) || contentEquals(Currency.Bitcoin.label)
+            if (contentEquals(Brita.label) || contentEquals(Bitcoin.label)) this else "Invalid"
         }
 
-        if (validCurrency) {
-            return when (currency) {
-                Currency.Brita.label -> Currency.Brita
-                Currency.Bitcoin.label -> Currency.Bitcoin
-                else -> throw InvalidCurrency()
-            }
-        } else throw InvalidCurrency()
+        return when (validCurrency) {
+            Brita.label -> Brita
+            Bitcoin.label -> Bitcoin
+            else -> throw InvalidCurrency()
+        }
     }
 
     private fun validateType(type: String): String {
