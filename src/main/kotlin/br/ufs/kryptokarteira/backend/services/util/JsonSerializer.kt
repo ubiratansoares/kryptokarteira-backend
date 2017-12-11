@@ -1,6 +1,5 @@
 package br.ufs.kryptokarteira.backend.services.util
 
-import br.ufs.kryptokarteira.backend.services.CannotDeserializeJson
 import com.google.gson.Gson
 import kotlin.reflect.KClass
 

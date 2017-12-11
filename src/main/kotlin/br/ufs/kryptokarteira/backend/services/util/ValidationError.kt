@@ -1,4 +1,4 @@
-package br.ufs.kryptokarteira.backend.services
+package br.ufs.kryptokarteira.backend.services.util
 
 sealed class ValidationError : Exception()
 class MissingTransactionBody : ValidationError()
