@@ -1,6 +1,6 @@
 package br.ufs.kryptokarteira.backend.tests.wallet
 
-import br.ufs.kryptokarteira.backend.domain.AccountManager
+import br.ufs.kryptokarteira.backend.domain.CryptoCurrencyTrader
 import br.ufs.kryptokarteira.backend.domain.KryptoBanker
 import br.ufs.kryptokarteira.backend.services.WalletService
 import com.nhaarman.mockito_kotlin.mock
@@ -11,12 +11,13 @@ import org.junit.Test
 class WalletServiceTests {
 
     lateinit var service: WalletService
-    lateinit var accountManager: AccountManager
+    lateinit var banker: KryptoBanker
+    lateinit var trader: CryptoCurrencyTrader
 
     @Before fun `before each test`() {
-        accountManager = mock()
-        val banker = KryptoBanker(accountManager)
-        service = WalletService(banker)
+        banker = mock()
+        trader = mock()
+        service = WalletService(banker, trader)
     }
 
     @Test fun `should create new wallet successfully`() {

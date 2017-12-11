@@ -10,7 +10,7 @@ import org.junit.Test
 class WalletTests {
 
     lateinit var bankAccount: BankAccount
-    lateinit var trader: CriptoCurrencyTrader
+    lateinit var trader: CryptoCurrencyTrader
     lateinit var broker: PricesBroker
     lateinit var wallet: Wallet
 

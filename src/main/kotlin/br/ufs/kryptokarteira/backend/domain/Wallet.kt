@@ -2,7 +2,7 @@ package br.ufs.kryptokarteira.backend.domain
 
 class Wallet(
         private val bankAccount: BankAccount,
-        private val trader: CriptoCurrencyTrader,
+        private val trader: CryptoCurrencyTrader,
         private val broker: PricesBroker) {
 
     fun buyCriptoCurrency(wantToBuy: Currency, amount: Float): Transaction {

@@ -1,6 +1,6 @@
 package br.ufs.kryptokarteira.backend.domain
 
-interface CriptoCurrencyTrader {
+interface CryptoCurrencyTrader {
 
     fun buyMore(owner: String, currency: Currency, amount: Float): Transaction
 

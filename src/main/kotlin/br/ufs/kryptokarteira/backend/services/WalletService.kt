@@ -13,7 +13,7 @@ import br.ufs.kryptokarteira.backend.services.util.TransactionData.Companion.TRA
 
 class WalletService(
         private val banker: KryptoBanker,
-        private val trader: CriptoCurrencyTrader) {
+        private val trader: CryptoCurrencyTrader) {
 
     private val mapper = JsonSerializer
 
