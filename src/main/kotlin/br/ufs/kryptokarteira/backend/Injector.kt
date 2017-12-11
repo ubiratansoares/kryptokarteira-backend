@@ -1,5 +1,6 @@
 package br.ufs.kryptokarteira.backend
 
+import br.ufs.kryptokarteira.backend.domain.KryptoBanker
 import br.ufs.kryptokarteira.backend.domain.PricesBroker
 import br.ufs.kryptokarteira.backend.infrastructure.BrokerInfrastructure
 import br.ufs.kryptokarteira.backend.infrastructure.datasources.bcb.BCBDataSource
@@ -7,6 +8,7 @@ import br.ufs.kryptokarteira.backend.infrastructure.datasources.mbtc.MBTCDataSou
 import br.ufs.kryptokarteira.backend.infrastructure.networking.RestCaller
 import br.ufs.kryptokarteira.backend.rest.APIGateway
 import br.ufs.kryptokarteira.backend.services.BrokerService
+import br.ufs.kryptokarteira.backend.services.WalletService
 import com.github.salomonbrys.kodein.*
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
@@ -25,12 +27,21 @@ object Injector {
         bind<PricesBroker>() with provider {
             BrokerInfrastructure(
                     bcb = instance(),
-                    mbtc = instance())
+                    mbtc = instance()
+            )
         }
 
-        bind<BrokerService>() with provider { BrokerService(instance()) }
+        bind<KryptoBanker>() with provider { KryptoBanker() }
 
-        bind<APIGateway>() with provider { APIGateway(instance()) }
+        bind<BrokerService>() with provider { BrokerService(instance()) }
+        bind<WalletService>() with provider { WalletService(instance()) }
+
+        bind<APIGateway>() with provider {
+            APIGateway(
+                    brokerService = instance(),
+                    walletService = instance()
+            )
+        }
     }
 
     val gateway: APIGateway by graph.instance()

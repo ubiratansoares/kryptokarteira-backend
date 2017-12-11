@@ -18,12 +18,12 @@ class WalletService(private val banker: KryptoBanker) {
     }
 
     private fun walletPayload(account: BankAccount): WalletPayload {
-        return with(account, {
+        return with(account) {
             WalletPayload(
-                    owner,
-                    savings.map { SavingPayload(it.currency.name, it.amount) }
+                    owner = account.owner,
+                    savings = savings.map { SavingPayload(it.currency.name, it.amount) }
             )
-        })
+        }
     }
 
 }

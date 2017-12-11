@@ -2,10 +2,12 @@ package br.ufs.kryptokarteira.backend.rest
 
 import br.ufs.kryptokarteira.backend.domain.*
 import br.ufs.kryptokarteira.backend.services.BrokerService
-import spark.Spark
+import br.ufs.kryptokarteira.backend.services.WalletService
 import spark.kotlin.*
 
-class APIGateway(private val brokerService: BrokerService) {
+class APIGateway(
+        private val brokerService: BrokerService,
+        private val walletService: WalletService) {
 
     fun start() {
 
@@ -28,6 +30,13 @@ class APIGateway(private val brokerService: BrokerService) {
             val pricing = brokerService.lastestPrices()
             reply {
                 pricing.statusCode withMessage pricing.result
+            }
+        }
+
+        get(path = "api/v1/wallet/new") {
+            val wallet = walletService.newWallet()
+            reply {
+                wallet.statusCode withMessage wallet.result
             }
         }
 

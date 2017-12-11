@@ -9,7 +9,7 @@ fun RouteHandler.reply(func: () -> Reply): String {
     val reply = func()
     status(reply.code)
     type(contentType = "application/json")
-    return "{\"message\":\"${reply.message}\"}"
+    return reply.message
 }
 
 fun RouteHandler.failure(func: () -> Reply): String {
