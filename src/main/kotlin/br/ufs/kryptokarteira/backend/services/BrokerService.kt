@@ -1,7 +1,7 @@
 package br.ufs.kryptokarteira.backend.services
 
 import br.ufs.kryptokarteira.backend.domain.PricesBroker
-import br.ufs.kryptokarteira.backend.services.output.PricePayload
+import br.ufs.kryptokarteira.backend.services.output.PricesPayload
 import br.ufs.kryptokarteira.backend.services.util.OutputMapper
 import br.ufs.kryptokarteira.backend.services.util.ServiceOperation
 
@@ -14,7 +14,7 @@ class BrokerService(private val broker: PricesBroker) {
         val pricing = broker.lastestPrices()
 
         val output = pricing.map {
-            PricePayload(
+            PricesPayload(
                     label = it.currency.label.toUpperCase(),
                     name = it.currency.name,
                     sell = it.sellPrice,

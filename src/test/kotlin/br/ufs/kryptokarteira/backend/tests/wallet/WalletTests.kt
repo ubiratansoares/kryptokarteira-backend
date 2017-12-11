@@ -6,27 +6,23 @@ import com.nhaarman.mockito_kotlin.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
-import java.util.*
 
 class WalletTests {
 
-    lateinit var manager: PortfolioManager
+    lateinit var bankAccount: BankAccount
     lateinit var trader: CriptoCurrencyTrader
     lateinit var broker: PricesBroker
     lateinit var wallet: Wallet
 
     @Before fun `before each test`() {
-        manager = mock()
         trader = mock()
         broker = mock()
-
-        val owner = UUID.randomUUID().toString()
-        wallet = Wallet(owner, manager, trader, broker)
+        bankAccount = setupBankAccount()
+        wallet = Wallet(bankAccount, trader, broker)
     }
 
     @Test fun `can buy criptocurrency with success when money available`() {
 
-        `setup savings and pricing`()
         `transaction as buy may succeed`()
 
         assertValidTransaction {
@@ -39,8 +35,6 @@ class WalletTests {
 
     @Test fun `can not buy criptocurrency with success when doesnt have money enough`() {
 
-        `setup savings and pricing`()
-
         assertInvalidTransaction {
             wallet.buyCriptoCurrency(wantToBuy = Bitcoin, amount = 20f)
         }
@@ -49,8 +43,6 @@ class WalletTests {
     }
 
     @Test fun `can only buy criptocurrency with positive amounts`() {
-
-        `setup savings and pricing`()
 
         assertInvalidTransaction {
             wallet.buyCriptoCurrency(wantToBuy = Bitcoin, amount = -10f)
@@ -65,7 +57,6 @@ class WalletTests {
 
     @Test fun `can sell criptocurrency with success`() {
 
-        `setup savings and pricing`()
         `transaction as sell may succeed`()
 
         assertValidTransaction {
@@ -78,12 +69,9 @@ class WalletTests {
 
     @Test fun `can only sell criptocurrency with positive amounts`() {
 
-        `setup savings and pricing`()
-
         assertInvalidTransaction {
             wallet.sellCriptoCurrency(wantToSell = Bitcoin, amount = -100f)
         }
-
 
         assertInvalidTransaction {
             wallet.sellCriptoCurrency(wantToSell = Brita, amount = 0.0f)
@@ -94,8 +82,6 @@ class WalletTests {
 
     @Test fun `can only sell criptocurrency with success when amount is on wallet`() {
 
-        `setup savings and pricing`()
-
         assertInvalidTransaction {
             wallet.sellCriptoCurrency(wantToSell = Brita, amount = 20.0f)
         }
@@ -103,7 +89,7 @@ class WalletTests {
         verifyZeroInteractions(trader)
     }
 
-    private fun `setup savings and pricing`() {
+    private fun setupBankAccount(): BankAccount {
         whenever(broker.lastestPrices())
                 .thenReturn(
                         listOf(
@@ -118,7 +104,7 @@ class WalletTests {
                 Investiment(Real, 100f)
         )
 
-        whenever(manager.savings()).thenReturn(savings)
+        return BankAccount("Bira", savings)
     }
 
     private fun `transaction as buy may succeed`() {
