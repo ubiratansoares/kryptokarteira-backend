@@ -1,11 +1,15 @@
 package br.ufs.kryptokarteira.backend
 
+import br.ufs.kryptokarteira.backend.domain.AccountManager
+import br.ufs.kryptokarteira.backend.domain.CriptoCurrencyTrader
 import br.ufs.kryptokarteira.backend.domain.KryptoBanker
 import br.ufs.kryptokarteira.backend.domain.PricesBroker
+import br.ufs.kryptokarteira.backend.infrastructure.AccountInfrastructure
 import br.ufs.kryptokarteira.backend.infrastructure.BrokerInfrastructure
 import br.ufs.kryptokarteira.backend.infrastructure.datasources.bcb.BCBDataSource
 import br.ufs.kryptokarteira.backend.infrastructure.datasources.mbtc.MBTCDataSource
 import br.ufs.kryptokarteira.backend.infrastructure.networking.RestCaller
+import br.ufs.kryptokarteira.backend.infrastructure.util.TraderInfrastructure
 import br.ufs.kryptokarteira.backend.rest.APIGateway
 import br.ufs.kryptokarteira.backend.services.BrokerService
 import br.ufs.kryptokarteira.backend.services.WalletService
@@ -31,10 +35,18 @@ object Injector {
             )
         }
 
-        bind<KryptoBanker>() with provider { KryptoBanker() }
+        bind<AccountManager>() with provider { AccountInfrastructure() }
+        bind<CriptoCurrencyTrader>() with provider { TraderInfrastructure() }
+        bind<KryptoBanker>() with provider { KryptoBanker(instance()) }
 
         bind<BrokerService>() with provider { BrokerService(instance()) }
-        bind<WalletService>() with provider { WalletService(instance()) }
+
+        bind<WalletService>() with provider {
+            WalletService(
+                    banker = instance(),
+                    trader = instance()
+            )
+        }
 
         bind<APIGateway>() with provider {
             APIGateway(

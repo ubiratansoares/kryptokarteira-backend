@@ -10,3 +10,7 @@ class SavingPayload(
         val name: String,
         val amount: Float
 )
+
+class TransactionResultPayload(
+        val message: String
+)
