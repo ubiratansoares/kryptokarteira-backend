@@ -9,6 +9,7 @@ import br.ufs.kryptokarteira.backend.infrastructure.BrokerInfrastructure
 import br.ufs.kryptokarteira.backend.infrastructure.TraderInfrastructure
 import br.ufs.kryptokarteira.backend.infrastructure.datasources.bcb.BCBDataSource
 import br.ufs.kryptokarteira.backend.infrastructure.datasources.mbtc.MBTCDataSource
+import br.ufs.kryptokarteira.backend.infrastructure.datasources.restdb.RestDBDataSource
 import br.ufs.kryptokarteira.backend.infrastructure.networking.RestCaller
 import br.ufs.kryptokarteira.backend.rest.APIGateway
 import br.ufs.kryptokarteira.backend.services.BrokerService
@@ -27,6 +28,7 @@ object Injector {
         bind<RestCaller>() with provider { RestCaller(instance()) }
         bind<BCBDataSource>() with provider { BCBDataSource(instance()) }
         bind<MBTCDataSource>() with provider { MBTCDataSource(instance()) }
+        bind<RestDBDataSource>() with provider { RestDBDataSource(instance()) }
 
         bind<PricesBroker>() with provider {
             BrokerInfrastructure(
@@ -35,7 +37,7 @@ object Injector {
             )
         }
 
-        bind<AccountManager>() with provider { AccountInfrastructure() }
+        bind<AccountManager>() with provider { AccountInfrastructure(instance()) }
         bind<CryptoCurrencyTrader>() with provider { TraderInfrastructure() }
         bind<CryptoBanker>() with provider { CryptoBanker(instance()) }
 

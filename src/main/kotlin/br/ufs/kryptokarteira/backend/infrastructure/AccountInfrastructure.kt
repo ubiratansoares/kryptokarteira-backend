@@ -1,8 +1,9 @@
 package br.ufs.kryptokarteira.backend.infrastructure
 
 import br.ufs.kryptokarteira.backend.domain.*
+import br.ufs.kryptokarteira.backend.infrastructure.datasources.restdb.RestDBDataSource
 
-class AccountInfrastructure : AccountManager {
+class AccountInfrastructure(val dataSource : RestDBDataSource) : AccountManager {
 
     private val accounts = mutableListOf<BankAccount>()
 
@@ -18,12 +19,7 @@ class AccountInfrastructure : AccountManager {
     }
 
     override fun createAccount(account: BankAccount): BankAccount {
-
-        if (accounts.isEmpty()) throw ExternalServiceContractError()
-
-        if (accountRegistred(account.owner)) throw ExternalServiceContractError()
-
-        accounts += account
+        dataSource.createAccount(account)
         return account
     }
 
