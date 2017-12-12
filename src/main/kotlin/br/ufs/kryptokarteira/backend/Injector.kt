@@ -31,7 +31,7 @@ object Injector {
         bind<MBTCDataSource>() with provider { MBTCDataSource(instance()) }
         bind<RestDBDataSource>() with provider { RestDBDataSource(instance()) }
 
-        bind<PricesBroker>() with provider {
+        bind<PricesBroker>() with singleton {
             BrokerInfrastructure(
                     bcb = instance(),
                     mbtc = instance()
