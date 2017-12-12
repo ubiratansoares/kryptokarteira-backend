@@ -14,7 +14,7 @@ object AsDomainError {
     operator fun invoke(unmapped: Throwable): DomainError = when (unmapped) {
         is SocketTimeoutException -> ExternalServiceTimeout()
         is UnknownHostException -> ExternalServiceUnavailable()
-        is RestIntegrationError.InternalServerErrorRest -> ExternalServiceUnavailable()
+        is RestIntegrationError.InternalServerError -> ExternalServiceUnavailable()
         is RestIntegrationError.ClientError -> ExternalServiceIntegrationError()
         is MalformedJsonException -> ExternalServiceContractError()
         is JsonIOException -> ExternalServiceContractError()
