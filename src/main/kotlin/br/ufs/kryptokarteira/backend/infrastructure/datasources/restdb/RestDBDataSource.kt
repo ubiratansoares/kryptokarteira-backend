@@ -2,6 +2,7 @@ package br.ufs.kryptokarteira.backend.infrastructure.datasources.restdb
 
 import br.ufs.kryptokarteira.backend.domain.DataForTransaction
 import br.ufs.kryptokarteira.backend.domain.Investiment
+import br.ufs.kryptokarteira.backend.domain.TransactionLog
 import br.ufs.kryptokarteira.backend.infrastructure.networking.Header
 import br.ufs.kryptokarteira.backend.infrastructure.networking.RestCaller
 import br.ufs.kryptokarteira.backend.services.util.JsonSerializer
@@ -44,14 +45,14 @@ class RestDBDataSource(private val caller: RestCaller) {
         val walletId = data.owner
         val walletUrl = "$DATABASE_URL/$walletId"
 
-        val payload = TransactionPayload(
+        val log = TransactionLog(
                 type = data.type,
                 amount = data.amount,
                 currency = data.currency.label,
-                dateTime = dateTime
+                timestamp = dateTime
         )
 
-        val jsonBody = "{\"\$push\": {\"history\": ${JsonSerializer.asJson(payload)}}}"
+        val jsonBody = "{\"\$push\": {\"history\": ${JsonSerializer.asJson(log)}}}"
         caller.put(walletUrl, jsonBody, apikeyHeader, AccountPayload::class)
     }
 

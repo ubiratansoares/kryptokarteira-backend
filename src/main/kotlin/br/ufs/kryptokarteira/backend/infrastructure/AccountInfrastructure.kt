@@ -29,7 +29,8 @@ class AccountInfrastructure(
                 owner = payload.owner,
                 savings = payload.savings.map {
                     Investiment(CurrencyFrom(it.name), it.amount)
-                }
+                },
+                history = payload.history
         )
     }
 
