@@ -56,6 +56,24 @@ class RestCaller(private val httpClient: OkHttpClient) {
                 .build()
 
         return executeAndAssemble(request, output)
+
+    }
+
+    fun <T : Any> patch(
+            url: String,
+            jsonBody: String,
+            authorization: Header,
+            output: KClass<T>): T {
+
+        val body = createBody(jsonBody)
+
+        val request = Request.Builder()
+                .url(url)
+                .patch(body)
+                .addHeader(authorization.name, authorization.value)
+                .build()
+
+        return executeAndAssemble(request, output)
     }
 
     private fun createBody(jsonBody: String): RequestBody {

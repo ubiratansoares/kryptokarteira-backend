@@ -34,8 +34,7 @@ class WalletService(
 
     fun newTransaction(rawOwner: String?, rawBody: String?): ServiceOperation {
         val (owner, type, currency, amount) = TransactionBodyValidation(rawOwner, rawBody)
-        val account = banker.account(owner)
-        val wallet = Wallet(account, trader, broker)
+        val wallet = Wallet(owner, banker, trader, broker)
 
         val transaction = when (type) {
             BUY_OPERATION -> wallet.buyCryptoCurrency(currency, amount)

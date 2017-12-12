@@ -7,19 +7,24 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Before
 import org.junit.Test
+import java.util.*
 
 class WalletTests {
 
-    lateinit var bankAccount: BankAccount
     lateinit var trader: CryptoCurrencyTrader
     lateinit var broker: PricesBroker
+    lateinit var banker: CryptoBanker
     lateinit var wallet: Wallet
 
     @Before fun `before each test`() {
         trader = mock()
         broker = mock()
-        bankAccount = setupBankAccount()
-        wallet = Wallet(bankAccount, trader, broker)
+        banker = mock()
+        val owner = UUID.randomUUID().toString()
+
+        setupRoles()
+
+        wallet = Wallet(owner, banker, trader, broker)
     }
 
     @Test fun `can buy criptocurrency with success when money available`() {
@@ -31,29 +36,7 @@ class WalletTests {
         }
 
         `verify trader interactions for single transaction`()
-    }
-
-
-    @Test fun `can not buy criptocurrency with success when doesnt have money enough`() {
-
-        assertInvalidTransaction {
-            wallet.buyCryptoCurrency(wantToBuy = Bitcoin, amount = 20f)
-        }
-
-        verifyZeroInteractions(trader)
-    }
-
-    @Test fun `can only buy criptocurrency with positive amounts`() {
-
-        assertInvalidTransaction {
-            wallet.buyCryptoCurrency(wantToBuy = Bitcoin, amount = -10f)
-        }
-
-        assertInvalidTransaction {
-            wallet.buyCryptoCurrency(wantToBuy = Brita, amount = 0.0f)
-        }
-
-        verifyZeroInteractions(trader)
+        `verify banker actioned for savings update`()
     }
 
     @Test fun `can sell criptocurrency with success`() {
@@ -65,20 +48,57 @@ class WalletTests {
         }
 
         `verify trader interactions for single transaction`()
+        `verify banker actioned for savings update`()
     }
 
+    @Test fun `can not buy criptocurrency with success when doesnt have money enough`() {
 
-    @Test fun `can only sell criptocurrency with positive amounts`() {
+        assertInvalidTransaction {
+            wallet.buyCryptoCurrency(wantToBuy = Bitcoin, amount = 20f)
+        }
+
+        `verify banker actioned only for account retrieval`()
+        `trader not actioned`()
+    }
+
+    @Test fun `cannot buy criptocurrency with negative amounts`() {
+
+        assertInvalidTransaction {
+            wallet.buyCryptoCurrency(wantToBuy = Bitcoin, amount = -10f)
+        }
+
+        `verify banker actioned only for account retrieval`()
+        `trader not actioned`()
+    }
+
+    @Test fun `cannot buy criptocurrency with zero amount`() {
+
+        assertInvalidTransaction {
+            wallet.buyCryptoCurrency(wantToBuy = Brita, amount = 0.0f)
+        }
+
+        `verify banker actioned only for account retrieval`()
+        `trader not actioned`()
+    }
+
+    @Test fun `cannot sell criptocurrency with negative amounts`() {
 
         assertInvalidTransaction {
             wallet.sellCryptoCurrency(wantToSell = Bitcoin, amount = -100f)
         }
 
+        `verify banker actioned only for account retrieval`()
+        `trader not actioned`()
+    }
+
+    @Test fun `cannot sell criptocurrency with zero amounts`() {
+
         assertInvalidTransaction {
             wallet.sellCryptoCurrency(wantToSell = Brita, amount = 0.0f)
         }
 
-        verifyZeroInteractions(trader)
+        `verify banker actioned only for account retrieval`()
+        `trader not actioned`()
     }
 
     @Test fun `can only sell criptocurrency with success when amount is on wallet`() {
@@ -87,10 +107,11 @@ class WalletTests {
             wallet.sellCryptoCurrency(wantToSell = Brita, amount = 20.0f)
         }
 
-        verifyZeroInteractions(trader)
+        `verify banker actioned only for account retrieval`()
+        `trader not actioned`()
     }
 
-    private fun setupBankAccount(): BankAccount {
+    private fun setupRoles() {
         whenever(broker.lastestPrices())
                 .thenReturn(
                         listOf(
@@ -105,7 +126,13 @@ class WalletTests {
                 Investiment(Real, 100f)
         )
 
-        return BankAccount("Bira", savings)
+
+        val account = BankAccount("Bira", savings)
+        whenever(banker.account(any())).thenReturn(account)
+    }
+
+    private fun `trader not actioned`() {
+        verifyZeroInteractions(trader)
     }
 
     private fun `transaction will succeed`() {
@@ -113,9 +140,7 @@ class WalletTests {
     }
 
     private fun assertInvalidTransaction(func: () -> Transaction) {
-        assertThatThrownBy {
-            func()
-        }.isInstanceOf(CannotPerformTransaction::class.java)
+        assertThatThrownBy { func() }.isInstanceOf(CannotPerformTransaction::class.java)
     }
 
     private fun assertValidTransaction(func: () -> Transaction) {
@@ -127,4 +152,12 @@ class WalletTests {
         verifyNoMoreInteractions(trader)
     }
 
+    private fun `verify banker actioned only for account retrieval`() {
+        verify(banker, times(1)).account(any())
+        verifyNoMoreInteractions(banker)
+    }
+
+    private fun `verify banker actioned for savings update`() {
+        verify(banker, times(1)).updateSavings(any(), any())
+    }
 }

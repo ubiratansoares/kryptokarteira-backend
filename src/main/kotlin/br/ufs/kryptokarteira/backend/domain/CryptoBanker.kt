@@ -18,6 +18,10 @@ class CryptoBanker(private val accountManager: AccountManager) {
         return accountManager.accountForOwner(owner)
     }
 
+    fun updateSavings(owner: String, newSavings: List<Investiment>) {
+        accountManager.updateSavings(owner, newSavings)
+    }
+
     private companion object {
         val INITIAL_GIVING = 100000f
         val NOTHING = 0.0f

@@ -38,7 +38,7 @@ object Injector {
         }
 
         bind<AccountManager>() with provider { AccountInfrastructure(instance()) }
-        bind<CryptoCurrencyTrader>() with provider { TraderInfrastructure() }
+        bind<CryptoCurrencyTrader>() with provider { TraderInfrastructure(instance()) }
         bind<CryptoBanker>() with provider { CryptoBanker(instance()) }
 
         bind<BrokerService>() with provider { BrokerService(instance()) }
