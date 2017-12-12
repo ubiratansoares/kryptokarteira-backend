@@ -23,7 +23,7 @@ class RestCaller(private val httpClient: OkHttpClient) {
 
         when (response.code()) {
             in 400..499 -> throw RestIntegrationError.ClientError
-            else -> throw RestIntegrationError.InternalServerErrorRest
+            else -> throw RestIntegrationError.InternalServerError
         }
     }
 
