@@ -27,10 +27,10 @@ class AccountInfrastructure(
     private fun accountFromPayload(payload: AccountPayload): BankAccount {
         return BankAccount(
                 owner = payload.owner,
+                history = payload.history,
                 savings = payload.savings.map {
                     Investiment(CurrencyFrom(it.name), it.amount)
-                },
-                history = payload.history
+                }
         )
     }
 

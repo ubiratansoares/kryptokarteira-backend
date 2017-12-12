@@ -71,7 +71,7 @@ class Wallet(
             when (it.currency) {
                 buyed -> Investiment(buyed, it.amount + quantity)
                 Real -> Investiment(Real, it.amount - debit)
-                else -> Investiment(it.currency, it.amount)
+                else -> it
             }
         }
     }
@@ -88,7 +88,7 @@ class Wallet(
             when (it.currency) {
                 target -> Investiment(target, it.amount - quantity)
                 Real -> Investiment(Real, it.amount + profit)
-                else -> Investiment(it.currency, it.amount)
+                else -> it
             }
         }
     }
