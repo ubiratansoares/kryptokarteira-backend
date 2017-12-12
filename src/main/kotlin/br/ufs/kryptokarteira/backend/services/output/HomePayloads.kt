@@ -12,5 +12,5 @@ class SimulationPayload(
         val name: String,
         @SerializedName("buy_price") val buy: Float,
         @SerializedName("selling_price") val sell: Float,
-        @SerializedName("real_money_value") val earns: Float
+        @SerializedName("earns_if_selling") val earns: Float
 )
