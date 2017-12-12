@@ -13,7 +13,7 @@ class FindLastWeekdayAvailableTests {
         val datetime = reference.atTime(10, 0)
 
         assertThat(DayOfWeek.from(datetime)).isEqualTo(DayOfWeek.TUESDAY)
-        val yesterday = "11-12-2017"
+        val yesterday = "12-11-2017"
         assertThat(FindLastWeekdayAvailable(datetime)).isEqualTo(yesterday)
     }
 
@@ -23,7 +23,7 @@ class FindLastWeekdayAvailableTests {
 
         assertThat(DayOfWeek.from(datetime)).isEqualTo(DayOfWeek.MONDAY)
 
-        val lastFriday = "08-12-2017"
+        val lastFriday = "12-08-2017"
         assertThat(FindLastWeekdayAvailable(datetime)).isEqualTo(lastFriday)
     }
 
@@ -33,7 +33,7 @@ class FindLastWeekdayAvailableTests {
 
         assertThat(DayOfWeek.from(datetime)).isEqualTo(DayOfWeek.SUNDAY)
 
-        val lastFriday = "08-12-2017"
+        val lastFriday = "12-08-2017"
         assertThat(FindLastWeekdayAvailable(datetime)).isEqualTo(lastFriday)
     }
 }

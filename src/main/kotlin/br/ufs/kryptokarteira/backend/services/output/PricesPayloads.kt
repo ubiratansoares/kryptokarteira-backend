@@ -11,14 +11,19 @@ class PricesPayload(
 
 object PayloadForPrices {
     operator fun invoke(prices: List<Pricing>): List<PricesPayload> {
-        return prices.map {
+        return prices.map { PayloadForPrice(it) }
+    }
+}
+
+object PayloadForPrice {
+    operator fun invoke(pricing: Pricing): PricesPayload {
+        return with(pricing) {
             PricesPayload(
-                    label = it.currency.label.toUpperCase(),
-                    name = it.currency.name,
-                    sell = it.sellPrice,
-                    buy = it.buyPrice
+                    label = currency.label.toUpperCase(),
+                    name = currency.name,
+                    sell = sellPrice,
+                    buy = buyPrice
             )
         }
     }
-
 }

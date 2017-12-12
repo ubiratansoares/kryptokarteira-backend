@@ -2,11 +2,13 @@ package br.ufs.kryptokarteira.backend.rest
 
 import br.ufs.kryptokarteira.backend.domain.*
 import br.ufs.kryptokarteira.backend.services.BrokerService
+import br.ufs.kryptokarteira.backend.services.HomeService
 import br.ufs.kryptokarteira.backend.services.WalletService
 import br.ufs.kryptokarteira.backend.services.util.*
 import spark.kotlin.*
 
 class APIGateway(
+        private val homeService: HomeService,
         private val brokerService: BrokerService,
         private val walletService: WalletService) {
 
@@ -24,6 +26,14 @@ class APIGateway(
             val authorized = CheckAuthorization(request)
             if (!authorized) {
                 deny { 401 withMessage "Invalid or missing API credentials" }
+            }
+        }
+
+        get(path = "api/v1/home/:owner/info") {
+            val owner = request.params(":owner")
+            val home = homeService.dataForHomeScreen(owner)
+            reply {
+                home.statusCode withMessage home.result
             }
         }
 

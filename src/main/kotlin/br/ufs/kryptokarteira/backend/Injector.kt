@@ -13,6 +13,7 @@ import br.ufs.kryptokarteira.backend.infrastructure.datasources.restdb.RestDBDat
 import br.ufs.kryptokarteira.backend.infrastructure.networking.RestCaller
 import br.ufs.kryptokarteira.backend.rest.APIGateway
 import br.ufs.kryptokarteira.backend.services.BrokerService
+import br.ufs.kryptokarteira.backend.services.HomeService
 import br.ufs.kryptokarteira.backend.services.WalletService
 import com.github.salomonbrys.kodein.*
 import com.google.gson.Gson
@@ -51,8 +52,16 @@ object Injector {
             )
         }
 
+        bind<HomeService>() with provider {
+            HomeService(
+                    broker = instance(),
+                    banker = instance()
+            )
+        }
+
         bind<APIGateway>() with provider {
             APIGateway(
+                    homeService = instance(),
                     brokerService = instance(),
                     walletService = instance()
             )

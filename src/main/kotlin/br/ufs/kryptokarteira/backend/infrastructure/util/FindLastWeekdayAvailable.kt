@@ -19,7 +19,7 @@ object FindLastWeekdayAvailable {
             FRIDAY -> reference.minusDays(1)
         }
 
-        val ddMMyyy = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val ddMMyyy = DateTimeFormatter.ofPattern("MM-dd-yyyy")
         return lastWeekDayAvailable.format(ddMMyyy)
     }
 
