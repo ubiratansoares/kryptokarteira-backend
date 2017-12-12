@@ -1,50 +1,36 @@
 package br.ufs.kryptokarteira.backend.infrastructure
 
-import br.ufs.kryptokarteira.backend.domain.*
+import br.ufs.kryptokarteira.backend.domain.AccountManager
+import br.ufs.kryptokarteira.backend.domain.BankAccount
+import br.ufs.kryptokarteira.backend.domain.CurrencyFrom
+import br.ufs.kryptokarteira.backend.domain.Investiment
+import br.ufs.kryptokarteira.backend.infrastructure.datasources.restdb.AccountPayload
 import br.ufs.kryptokarteira.backend.infrastructure.datasources.restdb.RestDBDataSource
 
-class AccountInfrastructure(val dataSource : RestDBDataSource) : AccountManager {
+class AccountInfrastructure(
+        private val dataSource: RestDBDataSource) : AccountManager {
 
-    private val accounts = mutableListOf<BankAccount>()
-
-    init {
-        accounts += BankAccount(
-                owner = "6a1438ee-abf2-4f26-bc95-fabb0361a080",
-                savings = listOf(
-                        Investiment(Currency.Real, 45678.8f),
-                        Investiment(Currency.Brita, 32456.1f),
-                        Investiment(Currency.Bitcoin, 34.3f)
-                )
-        )
-    }
-
-    override fun createAccount(account: BankAccount): BankAccount {
-        dataSource.createAccount(account)
-        return account
+    override fun createAccount(savings: List<Investiment>): BankAccount {
+        val payload = dataSource.createAccount(savings)
+        return accountFromPayload(payload)
     }
 
     override fun accountForOwner(owner: String): BankAccount {
-
-        if (accounts.isEmpty()) throw ExternalServiceContractError()
-
-        if (accountNotRegistred(owner)) throw ExternalServiceContractError()
-
-        return accounts.first { it.owner == owner }
+        val payload = dataSource.retrieveAccount(owner)
+        return accountFromPayload(payload)
     }
 
     override fun updateSavings(owner: String, savings: List<Investiment>) {
-        if (accounts.isEmpty()) throw ExternalServiceContractError()
-
-        if (accountNotRegistred(owner)) throw ExternalServiceContractError()
-
-        accounts.first { it.owner == owner }.copy(savings = savings)
+        dataSource.updateSavings(owner, savings)
     }
 
-    private fun accountNotRegistred(owner: String): Boolean {
-        return accounts.none { it.owner == owner }
+    private fun accountFromPayload(payload: AccountPayload): BankAccount {
+        return BankAccount(
+                owner = payload.owner,
+                savings = payload.savings.map {
+                    Investiment(CurrencyFrom(it.name), it.amount)
+                }
+        )
     }
 
-    private fun accountRegistred(owner: String): Boolean {
-        return !accountNotRegistred(owner)
-    }
 }

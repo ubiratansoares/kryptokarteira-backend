@@ -1,20 +1,38 @@
 package br.ufs.kryptokarteira.backend.infrastructure.datasources.restdb
 
-import br.ufs.kryptokarteira.backend.domain.BankAccount
+import br.ufs.kryptokarteira.backend.domain.Investiment
 import br.ufs.kryptokarteira.backend.infrastructure.networking.Header
 import br.ufs.kryptokarteira.backend.infrastructure.networking.RestCaller
 import br.ufs.kryptokarteira.backend.services.util.JsonSerializer
 
 class RestDBDataSource(private val caller: RestCaller) {
 
-    fun createAccount(account: BankAccount) {
+    fun createAccount(savings: List<Investiment>): AccountPayload {
+        val apikeyHeader = Header("x-apikey", API_KEY)
+        val mapped = CreateAccountPayload(
+                savings = savings.map { SavingPayload(it.currency.label, it.amount) }
+        )
+
+        val jsonBody = JsonSerializer.asJson(mapped)
+        return caller.post(DATABASE_URL, jsonBody, apikeyHeader, AccountPayload::class)
+    }
+
+    fun retrieveAccount(walletId: String): AccountPayload {
+        val apikey = Header("x-apikey", API_KEY)
+        val walletURL = "$DATABASE_URL/$walletId"
+        return caller.get(walletURL, AccountPayload::class, apikey)
+    }
+
+    fun updateSavings(walletId: String, savings: List<Investiment>) {
+
         val apikeyHeader = Header("x-apikey", API_KEY)
         val mapped = AccountPayload(
-                owner = account.owner,
-                savings = account.savings.map { SavingPayload(it.currency.label, it.amount) }
+                owner = walletId,
+                savings = savings.map { SavingPayload(it.currency.label, it.amount) }
         )
+        val walletURL = "$DATABASE_URL/$walletId"
         val jsonBody = JsonSerializer.asJson(mapped)
-        caller.post(DATABASE_URL, jsonBody, apikeyHeader, AccountPayload::class)
+        caller.put(walletURL, jsonBody, apikeyHeader, AccountPayload::class)
     }
 
     private companion object {

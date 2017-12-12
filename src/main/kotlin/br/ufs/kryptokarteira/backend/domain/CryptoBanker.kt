@@ -1,21 +1,17 @@
 package br.ufs.kryptokarteira.backend.domain
 
 import br.ufs.kryptokarteira.backend.domain.Currency.*
-import java.util.*
 
 class CryptoBanker(private val accountManager: AccountManager) {
 
     fun newAccount(): BankAccount {
-        val owner = UUID.randomUUID().toString()
         val savings = listOf(
                 Investiment(Real, INITIAL_GIVING),
                 Investiment(Brita, NOTHING),
                 Investiment(Bitcoin, NOTHING)
         )
 
-        val newAccount = BankAccount(owner, savings)
-        return accountManager.createAccount(newAccount)
-
+        return accountManager.createAccount(savings)
     }
 
     fun account(owner: String): BankAccount {
