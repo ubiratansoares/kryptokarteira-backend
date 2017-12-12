@@ -1,8 +1,9 @@
-package br.ufs.kryptokarteira.backend.infrastructure.util
+package br.ufs.kryptokarteira.backend.infrastructure
 
 import br.ufs.kryptokarteira.backend.domain.CryptoCurrencyTrader
 import br.ufs.kryptokarteira.backend.domain.DataForTransaction
 import br.ufs.kryptokarteira.backend.domain.Transaction
+
 
 class TraderInfrastructure : CryptoCurrencyTrader {
 

@@ -6,10 +6,10 @@ import br.ufs.kryptokarteira.backend.domain.CryptoCurrencyTrader
 import br.ufs.kryptokarteira.backend.domain.PricesBroker
 import br.ufs.kryptokarteira.backend.infrastructure.AccountInfrastructure
 import br.ufs.kryptokarteira.backend.infrastructure.BrokerInfrastructure
+import br.ufs.kryptokarteira.backend.infrastructure.TraderInfrastructure
 import br.ufs.kryptokarteira.backend.infrastructure.datasources.bcb.BCBDataSource
 import br.ufs.kryptokarteira.backend.infrastructure.datasources.mbtc.MBTCDataSource
 import br.ufs.kryptokarteira.backend.infrastructure.networking.RestCaller
-import br.ufs.kryptokarteira.backend.infrastructure.util.TraderInfrastructure
 import br.ufs.kryptokarteira.backend.rest.APIGateway
 import br.ufs.kryptokarteira.backend.services.BrokerService
 import br.ufs.kryptokarteira.backend.services.WalletService
