@@ -6,22 +6,39 @@ import br.ufs.kryptokarteira.backend.domain.CurrencyFrom
 import br.ufs.kryptokarteira.backend.domain.Investiment
 import br.ufs.kryptokarteira.backend.infrastructure.datasources.restdb.AccountPayload
 import br.ufs.kryptokarteira.backend.infrastructure.datasources.restdb.RestDBDataSource
+import br.ufs.kryptokarteira.backend.infrastructure.util.AsDomainError
 
 class AccountInfrastructure(
         private val dataSource: RestDBDataSource) : AccountManager {
 
     override fun createAccount(savings: List<Investiment>): BankAccount {
-        val payload = dataSource.createAccount(savings)
-        return accountFromPayload(payload)
+
+        try {
+            val payload = dataSource.createAccount(savings)
+            return accountFromPayload(payload)
+        } catch (incoming: Throwable) {
+            throw AsDomainError(incoming)
+        }
     }
 
     override fun accountForOwner(owner: String): BankAccount {
-        val payload = dataSource.retrieveAccount(owner)
-        return accountFromPayload(payload)
+
+        try {
+            val payload = dataSource.retrieveAccount(owner)
+            return accountFromPayload(payload)
+        } catch (incoming: Throwable) {
+            throw AsDomainError(incoming)
+        }
     }
 
     override fun updateSavings(owner: String, savings: List<Investiment>) {
-        dataSource.updateSavings(owner, savings)
+
+        try {
+            dataSource.updateSavings(owner, savings)
+        } catch (incoming: Throwable) {
+            throw AsDomainError(incoming)
+        }
+
     }
 
     private fun accountFromPayload(payload: AccountPayload): BankAccount {

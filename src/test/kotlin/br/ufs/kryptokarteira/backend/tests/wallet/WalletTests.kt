@@ -127,7 +127,7 @@ class WalletTests {
         )
 
 
-        val account = BankAccount("Bira", savings)
+        val account = BankAccount("Bira", savings, emptyList())
         whenever(banker.account(any())).thenReturn(account)
     }
 

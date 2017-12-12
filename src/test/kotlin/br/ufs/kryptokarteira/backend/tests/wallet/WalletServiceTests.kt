@@ -21,6 +21,7 @@ class WalletServiceTests {
 
     val fakeAccount = BankAccount(
             owner = "Bira",
+            history = emptyList(),
             savings = listOf(
                     Investiment(Real, 50000f),
                     Investiment(Brita, 10.0f),
