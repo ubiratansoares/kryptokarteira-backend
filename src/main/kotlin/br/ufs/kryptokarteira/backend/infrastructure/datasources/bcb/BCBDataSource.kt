@@ -2,14 +2,11 @@ package br.ufs.kryptokarteira.backend.infrastructure.datasources.bcb
 
 import br.ufs.kryptokarteira.backend.infrastructure.networking.RestCaller
 import br.ufs.kryptokarteira.backend.infrastructure.util.PricingValues
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 class BCBDataSource(private val caller: RestCaller) {
 
-    fun britaPrices(): PricingValues {
-        val yesterday = LocalDateTime.now().minusDays(5)
-        val formattedDate = yesterday.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
+    fun britaPrices(formattedDate : String): PricingValues {
+
         val fromYesterday = bcbAPI
                 .replace(datePlaceholder, formattedDate)
                 .replace(currencyPlaceholder, "USD")

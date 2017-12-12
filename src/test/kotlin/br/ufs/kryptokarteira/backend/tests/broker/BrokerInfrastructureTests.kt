@@ -34,8 +34,7 @@ class BrokerInfrastructureTests {
     @Test fun `should return prices at first time when both data sources available`() {
 
 
-        whenever(bcb.britaPrices()).thenReturn(brita)
-        whenever(mbtc.bitcoinPrices()).thenReturn(bitcon)
+        `data sources will return with success`()
 
         val prices = infrastructure.lastestPrices()
 
@@ -51,11 +50,10 @@ class BrokerInfrastructureTests {
 
     @Test fun `should return prices from cache when available`() {
 
-        whenever(bcb.britaPrices()).thenReturn(brita)
-        whenever(mbtc.bitcoinPrices()).thenReturn(bitcon)
+        `data sources will return with success`()
 
         for (i in 1..10) infrastructure.lastestPrices()
-        verify(bcb, times(1)).britaPrices()
+        verify(bcb, times(1)).britaPrices(any())
         verify(mbtc, times(1)).bitcoinPrices()
         verifyNoMoreInteractions(bcb)
         verifyNoMoreInteractions(mbtc)
@@ -115,5 +113,11 @@ class BrokerInfrastructureTests {
         assertThat(target.sellPrice).isEqualTo(origin.sell)
         assertThat(target.buyPrice).isEqualTo(origin.buy)
     }
+
+    private fun `data sources will return with success`() {
+        whenever(bcb.britaPrices(any())).thenReturn(brita)
+        whenever(mbtc.bitcoinPrices()).thenReturn(bitcon)
+    }
+
 
 }

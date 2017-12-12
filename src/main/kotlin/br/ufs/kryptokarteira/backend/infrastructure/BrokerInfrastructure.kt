@@ -6,7 +6,9 @@ import br.ufs.kryptokarteira.backend.domain.Pricing
 import br.ufs.kryptokarteira.backend.infrastructure.datasources.bcb.BCBDataSource
 import br.ufs.kryptokarteira.backend.infrastructure.datasources.mbtc.MBTCDataSource
 import br.ufs.kryptokarteira.backend.infrastructure.util.AsDomainError
+import br.ufs.kryptokarteira.backend.infrastructure.util.FindLastWeekdayAvailable
 import com.google.common.cache.CacheBuilder
+import java.time.LocalDateTime
 import java.util.concurrent.ExecutionException
 import java.util.concurrent.TimeUnit
 
@@ -33,7 +35,9 @@ class BrokerInfrastructure(
 
         try {
             val bitcoinValues = mbtc.bitcoinPrices()
-            val britaValues = bcb.britaPrices()
+
+            val formattedDate = FindLastWeekdayAvailable(LocalDateTime.now())
+            val britaValues = bcb.britaPrices(formattedDate)
 
             return listOf(
                     Pricing(Currency.Brita, britaValues.buy, britaValues.sell),
