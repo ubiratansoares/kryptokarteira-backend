@@ -1,5 +1,6 @@
 package br.ufs.kryptokarteira.backend.infrastructure.util
 
+import br.ufs.kryptokarteira.backend.domain.UnknownInternalError
 import java.time.DayOfWeek.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -17,6 +18,7 @@ object FindLastWeekdayAvailable {
             WEDNESDAY,
             THURSDAY,
             FRIDAY -> reference.minusDays(1)
+            else -> throw UnknownInternalError()
         }
 
         val ddMMyyy = DateTimeFormatter.ofPattern("MM-dd-yyyy")
