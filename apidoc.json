@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Documentation for KryptoKarteira REST API.",
   "title": "Documentation for KrytoKarteira Backend.",
-  "url" : "https://url.to/krytokarteira-backend/api",
+  "url" : "https://kryptokarteira.herokuapp.com/api",
   "template": {
     "withCompare": false,
     "withGenerator": false

@@ -105,7 +105,7 @@ Transfer-Encoding: chunked
 ###
 
 ###
-@api {get} v1/home/:owner/info
+@api {get} /v1/home/:owner/info
 @apiName GetHome
 @apiGroup Home
 @apiDescription Retrieve all information needed for the home screen, including broking, wallet and earns scenarios
