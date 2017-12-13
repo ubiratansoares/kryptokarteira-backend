@@ -38,9 +38,11 @@ shadowJar {
     version = 'SNAPSHOT'
 }
 
-task stage(dependsOn: ['clean', 'shadowJar'])
+task stage() {
+    dependsOn clean, shadowJar
+}
+
 shadowJar.mustRunAfter clean
-stage.dependsOn(shadowJar)
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
