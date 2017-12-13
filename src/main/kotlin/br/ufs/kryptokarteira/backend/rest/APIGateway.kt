@@ -15,7 +15,7 @@ class APIGateway(
     fun start() {
 
         config {
-            port = 8080
+            port = 5000
 
             staticFiles {
                 location = "/public"
