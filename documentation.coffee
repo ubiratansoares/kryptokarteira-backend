@@ -122,14 +122,14 @@ Transfer-Encoding: chunked
             "name": "Brita",
             "buy_price": 3.2845,
             "selling_price": 3.2839,
-            "real_money_value": 282.4154
+            "earns_if_selling": 282.4154
         },
         {
             "label": "BTC",
             "name": "Bitcoin",
             "buy_price": 56400,
             "selling_price": 56150,
-            "real_money_value": 56150
+            "earns_if_selling": 56150
         }
     ],
     "wallet": {
