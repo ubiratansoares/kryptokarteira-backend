@@ -15,7 +15,7 @@ class APIGateway(
     fun start() {
 
         config {
-            port = 5000
+            port = definePort()
 
             staticFiles {
                 location = "/public"
@@ -151,6 +151,12 @@ class APIGateway(
                 }
             }
         })
+    }
+
+    private fun definePort(): Int {
+        val processBuilder = ProcessBuilder()
+        val assignedOrNot = processBuilder.environment()["PORT"]
+        return assignedOrNot?.let { it.toInt() } ?: 8080
     }
 
 }
