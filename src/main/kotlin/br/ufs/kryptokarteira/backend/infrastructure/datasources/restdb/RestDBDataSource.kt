@@ -1,5 +1,6 @@
 package br.ufs.kryptokarteira.backend.infrastructure.datasources.restdb
 
+import br.ufs.kryptokarteira.backend.Configs
 import br.ufs.kryptokarteira.backend.domain.DataForTransaction
 import br.ufs.kryptokarteira.backend.domain.Investiment
 import br.ufs.kryptokarteira.backend.domain.TransactionLog
@@ -9,8 +10,10 @@ import br.ufs.kryptokarteira.backend.services.util.JsonSerializer
 
 class RestDBDataSource(private val caller: RestCaller) {
 
+    private val apikey by lazy { Configs.fromFileOrEnv("RESTDB_APIKEY") }
+
     fun createAccount(savings: List<Investiment>): AccountPayload {
-        val apikeyHeader = Header("x-apikey", API_KEY)
+        val apikeyHeader = Header("x-apikey", apikey)
         val mapped = CreateAccountPayload(
                 savings = savings.map { SavingPayload(it.currency.label, it.amount) }
         )
@@ -20,14 +23,14 @@ class RestDBDataSource(private val caller: RestCaller) {
     }
 
     fun retrieveAccount(walletId: String): AccountPayload {
-        val apikey = Header("x-apikey", API_KEY)
+        val apikey = Header("x-apikey", apikey)
         val walletURL = "$DATABASE_URL/$walletId"
         return caller.get(walletURL, AccountPayload::class, apikey)
     }
 
     fun updateSavings(walletId: String, savings: List<Investiment>) {
 
-        val apikeyHeader = Header("x-apikey", API_KEY)
+        val apikeyHeader = Header("x-apikey", apikey)
 
         val mapped = UpdateSavingsPayload(
                 savings = savings.map {
@@ -41,7 +44,7 @@ class RestDBDataSource(private val caller: RestCaller) {
     }
 
     fun registerTransaction(data: DataForTransaction, dateTime: String) {
-        val apikeyHeader = Header("x-apikey", API_KEY)
+        val apikeyHeader = Header("x-apikey", apikey)
         val walletId = data.owner
         val walletUrl = "$DATABASE_URL/$walletId"
 
@@ -58,6 +61,5 @@ class RestDBDataSource(private val caller: RestCaller) {
 
     private companion object {
         val DATABASE_URL = "https://kryptokarteira-3a93.restdb.io/rest/wallets"
-        val API_KEY = "5f2f7a83fb0b068e7b4b0e6921285dc489f66"
     }
 }

@@ -4,3 +4,4 @@
 out
 build/
 *.iml
+config.properties

@@ -23,7 +23,6 @@ repositories {
     maven { url 'https://jitpack.io' }
 }
 
-
 mainClassName = 'br.ufs.kryptokarteira.backend.LauncherKt'
 
 jar {

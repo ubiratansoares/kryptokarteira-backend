@@ -156,7 +156,11 @@ class APIGateway(
     private fun definePort(): Int {
         val processBuilder = ProcessBuilder()
         val assignedOrNot = processBuilder.environment()["PORT"]
-        return assignedOrNot?.let { it.toInt() } ?: 8080
+        return assignedOrNot?.let { it.toInt() } ?: PORT_LOCALHOST
+    }
+
+    companion object {
+        val PORT_LOCALHOST = 8080
     }
 
 }
