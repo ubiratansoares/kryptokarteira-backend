@@ -6,6 +6,7 @@ import br.ufs.kryptokarteira.backend.domain.DataForTransaction.Companion.BUY_OPE
 import br.ufs.kryptokarteira.backend.domain.DataForTransaction.Companion.SELL_OPERATION
 import br.ufs.kryptokarteira.backend.domain.PricesBroker
 import br.ufs.kryptokarteira.backend.domain.Wallet
+import br.ufs.kryptokarteira.backend.services.output.NewWalletCreatedPayloadFromBankAccount
 import br.ufs.kryptokarteira.backend.services.output.TransactionResultPayload
 import br.ufs.kryptokarteira.backend.services.output.WalletPayloadFromBankAccount
 import br.ufs.kryptokarteira.backend.services.util.InvalidTransactionType
@@ -22,7 +23,7 @@ class WalletService(
 
     fun newWallet(): ServiceOperation {
         val account = banker.newAccount()
-        val output = WalletPayloadFromBankAccount(account)
+        val output = NewWalletCreatedPayloadFromBankAccount(account)
         return ServiceOperation(200, mapper.asJson(output))
     }
 

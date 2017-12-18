@@ -1,7 +1,7 @@
 package br.ufs.kryptokarteira.backend.services
 
-import br.ufs.kryptokarteira.backend.domain.BankAccount
 import br.ufs.kryptokarteira.backend.domain.CryptoBanker
+import br.ufs.kryptokarteira.backend.domain.Currency.*
 import br.ufs.kryptokarteira.backend.domain.PricesBroker
 import br.ufs.kryptokarteira.backend.domain.Pricing
 import br.ufs.kryptokarteira.backend.services.output.HomePayload
@@ -18,8 +18,9 @@ class HomeService(
         val prices = broker.lastestPrices()
         val account = banker.account(owner)
         val payload = HomePayload(
+                currencies = listOf(Bitcoin, Brita, Real),
                 wallet = WalletPayloadFromBankAccount(account),
-                broking = SimulationPayloadFromBroking(prices, account)
+                broking = SimulationPayloadFromBroking(prices)
         )
 
         return ServiceOperation(200, JsonSerializer.asJson(payload))
@@ -27,20 +28,13 @@ class HomeService(
 }
 
 object SimulationPayloadFromBroking {
-    operator fun invoke(prices: List<Pricing>, bankAccount: BankAccount): List<SimulationPayload> {
+    operator fun invoke(prices: List<Pricing>): List<SimulationPayload> {
         return prices.map {
             SimulationPayload(
-                    label = it.currency.label.toUpperCase(),
-                    name = it.currency.name,
+                    label = it.currency.label,
                     sell = it.sellPrice,
-                    buy = it.buyPrice,
-                    earns = calculateEarns(it, bankAccount)
+                    buy = it.buyPrice
             )
         }
-    }
-
-    private fun calculateEarns(price: Pricing, bankAccount: BankAccount): Float {
-        val investimentAtCurrency = bankAccount.savings.first { it.currency == price.currency }
-        return investimentAtCurrency.amount * price.sellPrice
     }
 }

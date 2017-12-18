@@ -33,7 +33,7 @@ class BrokerServiceTests {
         assertThat(operation.statusCode).isEqualTo(200)
 
         assertThat(operation.result).contains(
-                Bitcoin.name,
+                Bitcoin.label,
                 fakeValue.toString()
         )
     }

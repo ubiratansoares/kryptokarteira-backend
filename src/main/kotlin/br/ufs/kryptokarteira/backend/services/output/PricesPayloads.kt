@@ -4,7 +4,6 @@ import br.ufs.kryptokarteira.backend.domain.Pricing
 
 class PricesPayload(
         val label: String,
-        val name: String,
         val buy: Float,
         val sell: Float
 )
@@ -19,8 +18,7 @@ object PayloadForPrice {
     operator fun invoke(pricing: Pricing): PricesPayload {
         return with(pricing) {
             PricesPayload(
-                    label = currency.label.toUpperCase(),
-                    name = currency.name,
+                    label = currency.label,
                     sell = sellPrice,
                     buy = buyPrice
             )
