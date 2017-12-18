@@ -1,16 +1,16 @@
 # Krypto Karteira Backend
  
 > This is a practical project for an application to Android Software 
-Engineer position at Stone. Check all details below
+Engineer position. Check all details below
 
 ## Why
 
-I just want work (finally) in a company where technology 
+Seeking for a company where technology 
 **really matters** and people **really cares** about Software Engineering and 
-the product. 
+the product ...
 
-The Stone challenge itself **does not require** a *Back-end for Front-end 
-implementation* per se. 
+The challenge itself **does not demand** a *Back-end for Front-end 
+implementation* as a mandatory requirement. 
 
 However, we should do things the right way : this BFF
 abstracts **all the bussiness rules** away from the mobile client, since this is 
