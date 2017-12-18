@@ -11,14 +11,14 @@ Transfer-Encoding: chunked
 
 [
     {
-        "label": "BTA",
-        "name": "Brita",
-        "value": 3.1138
+        "label": "bta",
+        "buy": 3.3182,
+        "sell": 3.3176
     },
     {
-        "label": "BTC",
-        "name": "Bitcoin",
-        "value": 54600
+        "label": "btc",
+        "buy": 68999,
+        "sell": 68900
     }
 ]
 ###
@@ -35,22 +35,7 @@ Content-Type: application/json
 Transfer-Encoding: chunked
 
 {
-    "owner": "5a300f083fa720170001ce56",
-    "savings": [
-        {
-            "name": "Real",
-            "amount": 100000
-        },
-        {
-            "name": "Brita",
-            "amount": 0
-        },
-        {
-            "name": "Bitcoin",
-            "amount": 0
-        }
-    ],
-    "transactions": []
+    "owner": "5a380e30a5ee897c00004c53"
 }
 ###
 
@@ -66,39 +51,27 @@ Content-Type: application/json
 Transfer-Encoding: chunked
 
 {
-    "owner": "5a3009883fa720170001ce55",
+    "owner": "5a3084213fa720170001d05f",
     "savings": [
         {
-            "name": "Real",
-            "amount": 43932.65
+            "label": "blr",
+            "amount": 44075
         },
         {
-            "name": "Brita",
-            "amount": 86
+            "label": "bta",
+            "amount": 0
         },
         {
-            "name": "Bitcoin",
+            "label": "btc",
             "amount": 1
         }
     ],
     "transactions": [
         {
-            "type": "sell",
-            "currency": "bta",
-            "amount": 6,
-            "timestamp": "2017-12-12T15:17:27.75"
-        },
-        {
-            "type": "buy",
-            "currency": "bta",
-            "amount": 100,
-            "timestamp": "2017-12-12T14:55:58.139"
-        },
-        {
             "type": "buy",
             "currency": "btc",
             "amount": 1,
-            "timestamp": "2017-12-12T14:55:21.739"
+            "timestamp": "2017-12-13T03:12:31.821"
         }
     ]
 }
@@ -116,62 +89,54 @@ Content-Type: application/json
 Transfer-Encoding: chunked
 
 {
-    "broking": [
+    "currencies": [
         {
-            "label": "BTA",
-            "name": "Brita",
-            "buy_price": 3.2845,
-            "selling_price": 3.2839,
-            "earns_if_selling": 282.4154
+            "label": "btc",
+            "name": "Bitcoin"
         },
         {
-            "label": "BTC",
-            "name": "Bitcoin",
-            "buy_price": 56400,
-            "selling_price": 56150,
-            "earns_if_selling": 56150
+            "label": "bta",
+            "name": "Brita"
+        },
+        {
+            "label": "blr",
+            "name": "Real"
+        }
+    ],
+    "broking": [
+        {
+            "label": "bta",
+            "buy_price": 3.3182,
+            "selling_price": 3.3176
+        },
+        {
+            "label": "btc",
+            "buy_price": 68502,
+            "selling_price": 68502
         }
     ],
     "wallet": {
-        "owner": "5a3009883fa720170001ce55",
+        "owner": "5a3084213fa720170001d05f",
         "savings": [
             {
-                "name": "Real",
-                "amount": 43932.65
+                "label": "blr",
+                "amount": 44075
             },
             {
-                "name": "Brita",
-                "amount": 86
+                "label": "bta",
+                "amount": 0
             },
             {
-                "name": "Bitcoin",
+                "label": "btc",
                 "amount": 1
             }
         ],
         "transactions": [
             {
-                "type": "sell",
-                "currency": "bta",
-                "amount": 6,
-                "timestamp": "2017-12-12T15:17:27.75"
-            },
-            {
-                "type": "sell",
-                "currency": "bta",
-                "amount": 8,
-                "timestamp": "2017-12-12T14:56:26.823"
-            },
-            {
-                "type": "buy",
-                "currency": "bta",
-                "amount": 100,
-                "timestamp": "2017-12-12T14:55:58.139"
-            },
-            {
                 "type": "buy",
                 "currency": "btc",
                 "amount": 1,
-                "timestamp": "2017-12-12T14:55:21.739"
+                "timestamp": "2017-12-13T03:12:31.821"
             }
         ]
     }
